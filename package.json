@@ -5,8 +5,10 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "pack": "electron-builder --dir",
-    "dist": "electron-builder"
+    "postinstall": "electron-builder install-app-deps",
+    "pack": "electron-builder -mwl",
+    "dist": "electron-builder -mwl --publish always",
+    "publish": "./build.sh"
   },
   "build": {
     "appId": "com.vmsscheduler.app",
