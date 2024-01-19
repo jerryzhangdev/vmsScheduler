@@ -1,0 +1,22 @@
+{
+  "name": "vmsscheduler",
+  "version": "1.0.0",
+  "description": "A virtual airlines route manager",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jerryzhangdev/vmsScheduler.git"
+  },
+  "author": "Jerry Zhang",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jerryzhangdev/vmsScheduler/issues"
+  },
+  "homepage": "https://github.com/jerryzhangdev/vmsScheduler#readme",
+  "devDependencies": {
+    "electron": "^28.1.4"
+  }
+}
