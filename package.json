@@ -18,7 +18,9 @@
     },
     "productName": "vmsScheduler",
     "mac": {
-      "target": ["dmg"],
+      "target": [
+        "dmg"
+      ],
       "identity": null,
       "category": "public.app-category.management"
     },
@@ -30,7 +32,6 @@
         "width": 544,
         "height": 408
       },
-
       "contents": [
         {
           "x": 450,
@@ -58,5 +59,8 @@
   "devDependencies": {
     "electron": "^28.1.4",
     "electron-builder": "^24.9.1"
+  },
+  "dependencies": {
+    "electron-store": "^8.1.0"
   }
 }
