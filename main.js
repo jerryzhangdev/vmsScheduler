@@ -144,6 +144,8 @@ ipcMain.on("initStore", async (event, icao, api) => {
     response = false;
     err = e;
   }
+
+  // If error occurs, the app must restart. Alert the member and restart.
   if(response == false){
     alert('error', ["Continue"], "Error", `The flightaware api key is invalid. The app must restart to fix the error.\n${err}`)
     app.relaunch()
@@ -153,8 +155,10 @@ ipcMain.on("initStore", async (event, icao, api) => {
 
   // Set initial settings to finished so next launch init page don't show
   store.set("isFirstLaunch", false)
+
+  // Alert the user and relaunch application
   alert('info', ["Continue"], "Initial Settings Complete!", "Application will now restart!")
   app.relaunch()
   app.exit()
-  return false
+
 })

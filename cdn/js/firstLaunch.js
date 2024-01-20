@@ -20,6 +20,8 @@ function submit() {
     if(icao.value.length != 3)return alert("ICAO must be 3 letters long!")
     if(flightawareAPI.value == "")return showError("flightaware-api")
 
+
+    // Send the data to backend
     ipcRenderer.sendSync("initStore", icao.value, flightawareAPI.value)
     
     return true;
