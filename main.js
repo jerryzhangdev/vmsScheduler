@@ -1,9 +1,16 @@
 // main.js
 
+
 // Modules to control application life and create native browser window
-const { app, BrowserWindow } = require('electron')
-const path = require('node:path')
+const { app, BrowserWindow, dialog } = require('electron')
+let { ipcMain } = require("electron")
 const Store = require('electron-store');
+const packageInfo = require("./package.json")
+const axios = require('axios')
+
+
+// Normal variable setup
+const flightawareHost = 'https://aeroapi.flightaware.com/aeroapi'
 
 const store = new Store();
 
@@ -84,7 +91,70 @@ app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit()
 })
 
+// Alert dialog
+/**
+ *
+ *
+ * @param {string} type none, info, error, question or warning
+ * @param {Array} buttons The name of each button
+ * @param {string} title the title of the alert
+ * @param {string} message the message of the alert
+ */
+function alert(type, buttons, title, message) {
+  const options = {
+    type: type,
+    buttons: buttons,
+    title: title,
+    message: title,
+    detail: message,
+  };
 
+  dialog.showMessageBox(null, options, (response, checkboxChecked) => {
+    console.log(response);
+    console.log(checkboxChecked);
+  });
+}
 
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and require them here.
+// IPC Renderers
+ipcMain.on("initStore", async (event, icao, api) => {
+  // Log that data received
+  console.log(`[Data Settings] Received data to store: ${icao} | ${api}`)
+
+  // Store the data
+  store.set("vaICAO", icao)
+  store.set("vaFlightawareAPI", api)
+
+  // set variables for the try statement
+  let response;
+  let err;
+
+  // Try to make a request with the api key.
+  try{
+    let config = {
+      method: 'get',
+      maxBodyLength: Infinity,
+      url: flightawareHost + '/airports',
+      headers: { 
+        'x-apikey': store.get('vaFlightawareAPI'), 
+        'Content-Type': 'application/json'
+      }
+    };
+    response = await axios.request(config)
+  } catch (e) {
+    response = false;
+    err = e;
+  }
+  if(response == false){
+    alert('error', ["Continue"], "Error", `The flightaware api key is invalid. The app must restart to fix the error.\n${err}`)
+    app.relaunch()
+    app.exit()
+    return
+  };
+
+  // Set initial settings to finished so next launch init page don't show
+  store.set("isFirstLaunch", false)
+  alert('info', ["Continue"], "Initial Settings Complete!", "Application will now restart!")
+  app.relaunch()
+  app.exit()
+  return false
+})
