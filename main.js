@@ -32,8 +32,8 @@ const createFirstLaunchWindow = () => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     title: "vmsScheduler",
-    width: 800,
-    height: 600,
+    width: 460,
+    height: 350,
     webPreferences: {
         nodeIntegration: true,
         contextIsolation: false,
@@ -46,7 +46,7 @@ const createFirstLaunchWindow = () => {
   mainWindow.loadFile('pages/firstLaunch.html')
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools()
+  // mainWindow.webContents.openDevTools()
 }
 
 // This method will be called when Electron has finished
@@ -65,7 +65,15 @@ if (store.get("isFirstLaunch") == false)  {
   app.on('activate', () => {
     // On macOS it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
-    if (BrowserWindow.getAllWindows().length === 0) createWindow()
+    if (BrowserWindow.getAllWindows().length === 0) {
+      if (store.get("isFirstLaunch") == false)  {
+        //Show main window
+        createWindow()
+      } else {
+        //Show startup window and wait until the "OK" button is clicked
+        createFirstLaunchWindow()
+      }
+    }
   })
 })
 
