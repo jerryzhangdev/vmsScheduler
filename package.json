@@ -59,7 +59,7 @@
   "homepage": "https://github.com/jerryzhangdev/vmsScheduler#readme",
   "devDependencies": {
     "electron": "^28.1.4",
-    "electron-builder": "^24.9.1"
+    "electron-builder": "^24.13.3"
   },
   "dependencies": {
     "axios": "^1.6.5",
